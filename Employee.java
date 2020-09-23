@@ -1,15 +1,20 @@
 package employeeWageComputation;
 
 public class Employee {
-	static final int PRESENT=1,WAGEPERHR=20;
+	static final int HALFDAY=1,FULLDAY=2,WAGEPERHR=20;
 	public static void main(String[] args)
 	{
-		int random=(int)Math.floor(Math.random()*10)%2;
+		int random=(int)Math.floor(Math.random()*10)%3;
 		int workingHrs=0,salary;
 
-		if(PRESENT==random)
+		if(random==HALFDAY)
 		{
-			System.out.println("Employee Is Present ");
+			System.out.println("Employee Is Present For Halfday");
+			workingHrs=4;
+		}
+		else if(random==FULLDAY)
+		{
+			System.out.println("Employee Is Present For Fullday");
 			workingHrs=8;
 		}
 		else
@@ -17,5 +22,6 @@ public class Employee {
 		salary=WAGEPERHR*workingHrs;
 
 		System.out.println("Employee Wage "+salary);
+
 	}
 }
