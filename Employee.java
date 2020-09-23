@@ -7,18 +7,20 @@ public class Employee {
 		int random=(int)Math.floor(Math.random()*10)%3;
 		int workingHrs=0,salary;
 
-		if(random==HALFDAY)
+		switch(random)
 		{
-			System.out.println("Employee Is Present For Halfday");
-			workingHrs=4;
+			case HALFDAY:
+							System.out.println("Employee Is Present For Halfday");
+							workingHrs=4;
+							break;
+			case FULLDAY:
+							System.out.println("Employee Is Present For Fullday");
+							workingHrs=8;
+							break;
+			default:
+							System.out.println("Employee Is Absent ");
 		}
-		else if(random==FULLDAY)
-		{
-			System.out.println("Employee Is Present For Fullday");
-			workingHrs=8;
-		}
-		else
-			System.out.println("Employee Is Absent ");
+
 		salary=WAGEPERHR*workingHrs;
 
 		System.out.println("Employee Wage "+salary);
