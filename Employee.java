@@ -1,18 +1,21 @@
 package employeeWageComputation;
 import java.util.Scanner;
 
-class Employee {
+public class Employee {
 	
-	int totalWage,wagePerHr,day,workingHr; // instance variable
+	int count=0 ; // instance variable
 	String companyName;
+	static CompEmpWage compArray[];
 	
-	// getting number of companies
+	
+	
+	// input  number of companies and details
 	public static void main(String[] args){
 		Scanner sc=new Scanner(System.in);
 		System.out.print("Enter the number of Companies : ");
 		int numOfComp=sc.nextInt();
-		Employee[] CompEmpDetail = new Employee[numOfComp];
-		
+		Employee obj = new Employee();
+		compArray = new CompEmpWage[numOfComp];
 	    for (int i=0;i<numOfComp;i++) {
 	    	Scanner sc2=new Scanner(System.in);
 	    	System.out.print("Enter the Company Name : ");
@@ -28,45 +31,45 @@ class Employee {
 	    	System.out.print("Enter the working hour in a month : ");
 	    	int workingHr=sc.nextInt();
 	    	
-	    	CompEmpDetail[i]= new Employee(compName,wagePerHr,fullDayHr,halfDayHr,day , workingHr);
-	 }
+	    	obj.EmpWageBuilder(compName,wagePerHr,fullDayHr,halfDayHr,day ,workingHr);
+	    }
+	    obj.calculateWage();
 }	
+	
 
-public Employee(String compName,int wagePerHr,int fullDayHr,int halfDayHr,int day , int workingHr){
-	this.companyName=compName;
-	this.wagePerHr=wagePerHr;
-	this.day=day;
-	this.workingHr=workingHr;
-	this.totalWage=calculateWage(fullDayHr ,halfDayHr);
-	this.EmpWageBuilder();	
+		
+// Employee Wage Builder
+public void EmpWageBuilder(String compName,int wagePerHr,int fullDayHr,int halfDayHr,int day , int workingHr){
+		compArray[count] = new CompEmpWage(compName,wagePerHr,fullDayHr,halfDayHr,day , workingHr);
+		count++;
 }
 	
+public void calculateWage(){
+		for(int i=0;i<count;i++){
+			compArray[i].setTotalWage(calculateWage(compArray[i]));
+            compArray[i].print();
+		}
+}	
+
 //calculate total wage for each company
-public  int calculateWage(int fullDayHr , int halfDayHr){
+public  int calculateWage(CompEmpWage companyDetail){
 	int workHrs=0 ,totalWage=0;
-	for (int i=1;i<=this.day && workHrs<=this.workingHr;i++){
+	for (int i=1;i<=companyDetail.day && workHrs<=companyDetail.workingHr;i++){
 			switch(getrandom()){
 			case 1:
-					totalWage = gettotalWage(wagePerHr,fullDayHr,totalWage); 
-					workHrs=getWorkingHrs(fullDayHr,workHrs);
+					totalWage = gettotalWage(companyDetail.wagePerHr, companyDetail.fullDayHr ,totalWage); 
+					workHrs=getWorkingHrs(companyDetail.fullDayHr,workHrs);
 					break;
 			case 2:
-					totalWage=gettotalWage(wagePerHr,halfDayHr,totalWage);
-					workHrs=getWorkingHrs(halfDayHr,workHrs);
+					totalWage=gettotalWage(companyDetail.wagePerHr, companyDetail.halfDayHr ,totalWage);
+					workHrs=getWorkingHrs(companyDetail.halfDayHr,workHrs);
 				break;
 				default:
-				}
-		}
+				}	
+	}
 	return totalWage;
 }
 
-// Employee Wage Builder
-public void EmpWageBuilder(){
-	System.out.println("Company Name : "+ this.companyName);
-	System.out.println("Wage : " +this.totalWage );
-	System.out.println("************");
-	
-}
 
 // return work hours of an employee in a company
 public static int getWorkingHrs(int DayHr , int workHrs){
@@ -86,3 +89,27 @@ public static int gettotalWage(int wagePerHr,int dayHr,int totalWage ){
 	 return totalWage;
 	}
 }
+
+class CompEmpWage {
+	int totalWage,wagePerHr,day,workingHr,fullDayHr,halfDayHr;
+	String companyName;
+	
+	public CompEmpWage(String compName,int wagePerHr,int fullDayHr,int halfDayHr,int day , int workingHr){
+	this.companyName=compName;
+	this.wagePerHr=wagePerHr;
+	this.day=day;
+	this.workingHr=workingHr;	
+	this.fullDayHr=fullDayHr;
+	this.halfDayHr=halfDayHr;
+	}
+	
+	public void setTotalWage(int totalWage){
+	this.totalWage=totalWage;
+	}
+	
+	public void print(){
+		System.out.println("Company : " + this.companyName + "TotalWage : " + this.totalWage);
+	}
+}
+
+
