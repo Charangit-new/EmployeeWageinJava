@@ -1,5 +1,5 @@
 package employeeWageComputation;
-import java.util.Scanner;
+import java.util.*;
 
 
 interface IEmployee{
@@ -12,16 +12,15 @@ public class Employee implements IEmployee {
 	
 	int count=0 ; // instance variable
 	String companyName;
-	static CompEmpWage compArray[];
-		
-	
+	ArrayList<CompEmpWage> arrayList= new ArrayList<CompEmpWage>();
+	static Employee obj = new Employee();
 	// input  number of companies and details
 	public static void main(String[] args){
 		Scanner sc=new Scanner(System.in);
 		System.out.print("Enter the number of Companies : ");
 		int numOfComp=sc.nextInt();
-		Employee obj = new Employee();
-		compArray = new CompEmpWage[numOfComp];
+		
+		//Employee obj = new Employee();
 	    for (int i=0;i<numOfComp;i++) {
 	    	Scanner sc2=new Scanner(System.in);
 	    	System.out.print("Enter the Company Name : ");
@@ -36,25 +35,20 @@ public class Employee implements IEmployee {
 	    	int day=sc.nextInt();
 	    	System.out.print("Enter the working hour in a month : ");
 	    	int workingHr=sc.nextInt();
-	    	
 	    	obj.EmpWageBuilder(compName,wagePerHr,fullDayHr,halfDayHr,day ,workingHr);
-	    }
+	    }	
 	    obj.calculateWage();
-}	
-	
-
+}
 		
 // Employee Wage Builder
-
 public void EmpWageBuilder(String compName,int wagePerHr,int fullDayHr,int halfDayHr,int day , int workingHr){
-		compArray[count] = new CompEmpWage(compName,wagePerHr,fullDayHr,halfDayHr,day , workingHr);
-		count++;
+		arrayList.add( new CompEmpWage(compName,wagePerHr,fullDayHr,halfDayHr,day , workingHr));
 }
 	
 public void calculateWage(){
-		for(int i=0;i<count;i++){
-			compArray[i].setTotalWage(calculateWage(compArray[i]));
-            compArray[i].print();
+		for(CompEmpWage detail: arrayList){
+			detail.setTotalWage(calculateWage(detail));
+            detail.print();
 		}
 }	
 
@@ -64,15 +58,15 @@ public  int calculateWage(CompEmpWage companyDetail){
 	for (int i=1;i<=companyDetail.day && workHrs<=companyDetail.workingHr;i++){
 			switch(getrandom()){
 			case 1:
-					totalWage = gettotalWage(companyDetail.wagePerHr, companyDetail.fullDayHr ,totalWage); 
-					workHrs=getWorkingHrs(companyDetail.fullDayHr,workHrs);
-					break;
+			totalWage = gettotalWage(companyDetail.wagePerHr, companyDetail.fullDayHr ,totalWage); 
+			workHrs=getWorkingHrs(companyDetail.fullDayHr,workHrs);
+			break;
 			case 2:
-					totalWage=gettotalWage(companyDetail.wagePerHr, companyDetail.halfDayHr ,totalWage);
-					workHrs=getWorkingHrs(companyDetail.halfDayHr,workHrs);
-				break;
-				default:
-				}	
+			totalWage=gettotalWage(companyDetail.wagePerHr, companyDetail.halfDayHr ,totalWage);
+			workHrs=getWorkingHrs(companyDetail.halfDayHr,workHrs);
+			break;
+			default:
+			}	
 	}
 	return totalWage;
 }
