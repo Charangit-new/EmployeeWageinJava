@@ -1,13 +1,19 @@
 package employeeWageComputation;
 import java.util.Scanner;
 
-public class Employee {
+
+interface IEmployee{
+	public void EmpWageBuilder(String compName,int wagePerHr,int fullDayHr,int halfDayHr,int day , int workingHr);
+	public void calculateWage();
+}
+
+
+public class Employee implements IEmployee {
 	
 	int count=0 ; // instance variable
 	String companyName;
 	static CompEmpWage compArray[];
-	
-	
+		
 	
 	// input  number of companies and details
 	public static void main(String[] args){
@@ -39,6 +45,7 @@ public class Employee {
 
 		
 // Employee Wage Builder
+
 public void EmpWageBuilder(String compName,int wagePerHr,int fullDayHr,int halfDayHr,int day , int workingHr){
 		compArray[count] = new CompEmpWage(compName,wagePerHr,fullDayHr,halfDayHr,day , workingHr);
 		count++;
@@ -108,7 +115,7 @@ class CompEmpWage {
 	}
 	
 	public void print(){
-		System.out.println("Company : " + this.companyName + "TotalWage : " + this.totalWage);
+		System.out.println("Company : " + this.companyName + "   TotalWage : " + this.totalWage);
 	}
 }
 
