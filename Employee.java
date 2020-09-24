@@ -10,11 +10,13 @@ interface IEmployee{
 
 public class Employee implements IEmployee {
 	
-	int count=0 ; // instance variable
 	String companyName;
-	ArrayList<CompEmpWage> arrayList= new ArrayList<CompEmpWage>();
 	
+	ArrayList<CompEmpWage> arrayList= new ArrayList<CompEmpWage>();
 	ArrayList<Integer> dailyWageArrayList ;
+	ArrayList<Integer> totalWageArrayList = new ArrayList<Integer>();
+	ArrayList<String> compNameArrayList = new ArrayList<String>();
+	
 	
 	static Employee obj = new Employee();
 	
@@ -40,14 +42,21 @@ public class Employee implements IEmployee {
 	    	int workingHr=sc.nextInt();
 	    	obj.EmpWageBuilder(compName,wagePerHr,fullDayHr,halfDayHr,day ,workingHr);
 	    }	
-	    obj.calculateWage();
+	    	obj.calculateWage();
+	    
+	    	obj.getQuery();
 }
-		
+
+	
+	
 // Employee Wage Builder
 public void EmpWageBuilder(String compName,int wagePerHr,int fullDayHr,int halfDayHr,int day , int workingHr){
 		arrayList.add( new CompEmpWage(compName,wagePerHr,fullDayHr,halfDayHr,day , workingHr));
 }
-	
+
+
+
+// calling parameterized calculateWage method to calculate Wage 
 public void calculateWage(){
 		for(CompEmpWage detail: arrayList){
 			detail.setTotalWage(calculateWage(detail));
@@ -56,10 +65,12 @@ public void calculateWage(){
 		}
 }	
 
+
 //calculate total wage for each company
 public  int calculateWage(CompEmpWage companyDetail){
 	int workHrs=0 ,totalWage=0, zeroDayHr=0;
 	dailyWageArrayList = new ArrayList<Integer>();
+	compNameArrayList.add(companyDetail.companyName);
 	for (int i=1;i<=companyDetail.day && workHrs<=companyDetail.workingHr;i++){
 			switch(getrandom()){
 			case 1:
@@ -75,8 +86,31 @@ public  int calculateWage(CompEmpWage companyDetail){
 				workHrs=getWorkingHrs(zeroDayHr,workHrs);
 			}	
 	}
+	totalWageArrayList.add(totalWage);
+	
 	return totalWage;
 }
+
+// getting query about company total Wage
+public void getQuery(){
+	Scanner sc = new Scanner(System.in);
+	System.out.println("***************");
+	int index =0;
+	System.out.println("Company List");
+	for (String s : compNameArrayList){
+	System.out.println((index++)+" : " + s);
+	}
+	System.out.println("Query Detail");
+	System.out.print("Enter the company index starting from 0 : ");
+	int n=sc.nextInt();
+	if ( n  <= (index-1) ){
+	System.out.println("Total Wage : " + totalWageArrayList.get(n));
+	}
+	else{
+		System.out.println("No Company Found");
+	}
+}
+
 
 
 // return work hours of an employee in a company
@@ -84,11 +118,14 @@ public static int getWorkingHrs(int DayHr , int workHrs){
 	workHrs=DayHr+workHrs;
 	return workHrs;
 }
+
+
 // return random value
 public static int getrandom(){
 	int random=(int)Math.floor(Math.random()*10)%3;
 	return random;
 }
+
 
 // return total wage
 public  int gettotalWage(int wagePerHr,int dayHr,int totalWage ){
@@ -98,6 +135,7 @@ public  int gettotalWage(int wagePerHr,int dayHr,int totalWage ){
 	 return totalWage;
 	}
 }
+
 
 class CompEmpWage {
 	int totalWage,wagePerHr,day,workingHr,fullDayHr,halfDayHr;
@@ -116,10 +154,10 @@ class CompEmpWage {
 	this.totalWage=totalWage;
 	}
 	
-	
 	public void print(){
 		System.out.println("Company : " + this.companyName + "   TotalWage : " + this.totalWage);
 	}
+	
 }
 
 
