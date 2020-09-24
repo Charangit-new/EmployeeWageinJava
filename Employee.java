@@ -13,14 +13,17 @@ public class Employee implements IEmployee {
 	int count=0 ; // instance variable
 	String companyName;
 	ArrayList<CompEmpWage> arrayList= new ArrayList<CompEmpWage>();
+	
+	ArrayList<Integer> dailyWageArrayList ;
+	
 	static Employee obj = new Employee();
+	
 	// input  number of companies and details
 	public static void main(String[] args){
 		Scanner sc=new Scanner(System.in);
 		System.out.print("Enter the number of Companies : ");
 		int numOfComp=sc.nextInt();
 		
-		//Employee obj = new Employee();
 	    for (int i=0;i<numOfComp;i++) {
 	    	Scanner sc2=new Scanner(System.in);
 	    	System.out.print("Enter the Company Name : ");
@@ -49,12 +52,14 @@ public void calculateWage(){
 		for(CompEmpWage detail: arrayList){
 			detail.setTotalWage(calculateWage(detail));
             detail.print();
+            System.out.println(" Daily Wage :  " + dailyWageArrayList);
 		}
 }	
 
 //calculate total wage for each company
 public  int calculateWage(CompEmpWage companyDetail){
-	int workHrs=0 ,totalWage=0;
+	int workHrs=0 ,totalWage=0, zeroDayHr=0;
+	dailyWageArrayList = new ArrayList<Integer>();
 	for (int i=1;i<=companyDetail.day && workHrs<=companyDetail.workingHr;i++){
 			switch(getrandom()){
 			case 1:
@@ -66,6 +71,8 @@ public  int calculateWage(CompEmpWage companyDetail){
 			workHrs=getWorkingHrs(companyDetail.halfDayHr,workHrs);
 			break;
 			default:
+				totalWage=gettotalWage(companyDetail.wagePerHr, zeroDayHr ,totalWage);
+				workHrs=getWorkingHrs(zeroDayHr,workHrs);
 			}	
 	}
 	return totalWage;
@@ -84,8 +91,9 @@ public static int getrandom(){
 }
 
 // return total wage
-public static int gettotalWage(int wagePerHr,int dayHr,int totalWage ){
+public  int gettotalWage(int wagePerHr,int dayHr,int totalWage ){
 	 int dailyWage = wagePerHr*dayHr;
+	 dailyWageArrayList.add(dailyWage);
 	 totalWage=totalWage+dailyWage;
 	 return totalWage;
 	}
@@ -107,6 +115,7 @@ class CompEmpWage {
 	public void setTotalWage(int totalWage){
 	this.totalWage=totalWage;
 	}
+	
 	
 	public void print(){
 		System.out.println("Company : " + this.companyName + "   TotalWage : " + this.totalWage);
